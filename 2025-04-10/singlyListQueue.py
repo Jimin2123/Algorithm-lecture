@@ -25,20 +25,52 @@ class LinkedQueue:
     self.size += 1 # 큐의 크기 증가
 
   def showq(self):
+    if self.isEmpty():
+      print("큐가 비어있음")
+      return None
+
     p = self.front
-    print("front => ", end="")
+    print("front => ", end="") # 큐의 front를 출력
+    
     while p:
-      if p.next != None:
+      if p.next != None: # 다음 노드가 있을 때
         print("{!s:<7}".format(p.item), "->", end="")
       else:
         print(p.item, end="")
       p = p.next
     print(" <= rear")
 
+  def remove(self):
+    if self.isEmpty():
+      raise EmptyError("queue안에 아무것도 없음")
+    else:
+      fitem = self.front.item # front의 item을 fitem에 저장
+      prefront = self.front # 삭제할 item을 prefront에 저장
+      self.front = self.front.next # front를 다음 노드로 이동
+      self.size -= 1 # 인덱스 사이즈 감소
+      del prefront # 삭제
+      if self.isEmpty():
+        self.rear = None # 큐가 비어있을 때 rear를 None으로 설정
+      return fitem # 삭제한 item을 반환
+
+class EmptyError(Exception):
+  pass
 
 if __name__ == "__main__":
   q = LinkedQueue() # 생성자 호출
   q.add("apple")
   q.add("orange")
   q.add("banana")
+  q.showq()
+
+  removeItem = q.remove()
+  print("front인 사과 삭제 후 removeItem: ", removeItem)
+  q.showq()
+
+  removeItem = q.remove()
+  print("front인 사과 삭제 후 removeItem: ", removeItem)
+  q.showq()
+
+  removeItem = q.remove()
+  print("front인 사과 삭제 후 removeItem: ", removeItem)
   q.showq()
